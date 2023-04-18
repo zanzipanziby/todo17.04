@@ -1,5 +1,14 @@
-import {ChangeTodolistFilterValueActionType, setTodolistActionType} from "../store/reducers/todolist-reducers";
-import {SetTasksActionType} from "../store/reducers/tasks-reducer";
+import {
+    AddTodolistActionType,
+    ChangeTodolistFilterValueActionType, DeleteTodolistActionType,
+    setTodolistActionType, UpdateTodolistTitleActionType
+} from "../store/reducers/todolist-reducers";
+import {
+    AddTaskActionType,
+    DeleteTaskActionType,
+    SetTasksActionType,
+    UpdateTaskActionType
+} from "../store/reducers/tasks-reducer";
 
 export type AuthMeDataType = {
     id: number
@@ -57,7 +66,16 @@ export type UpdateTaskModelType = {
     status: TaskStatuses
     priority: number
     startDate: string
-    deadline: string
+    deadline: string | null
+}
+
+export type UpdateTaskDomainModelType = {
+    title?: string
+    description?: string
+    status?: TaskStatuses
+    priority?: number
+    startDate?: string
+    deadline?: string | null
 }
 
 export type ResponseTaskType = {
@@ -79,3 +97,9 @@ export type ActionsType =
     | setTodolistActionType
     | SetTasksActionType
     | ChangeTodolistFilterValueActionType
+    | DeleteTaskActionType
+    | AddTaskActionType
+    | UpdateTaskActionType
+    | AddTodolistActionType
+    | UpdateTodolistTitleActionType
+    | DeleteTodolistActionType

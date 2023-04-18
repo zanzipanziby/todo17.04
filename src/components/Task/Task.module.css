@@ -1,0 +1,4 @@
+.taskContainer {
+    display: flex;
+    justify-content: space-between;
+}

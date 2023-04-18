@@ -1,10 +1,20 @@
 import React, {useEffect} from 'react';
+import s from './Todolist.module.css'
 import {FilterValueType, ServerTaskType, TaskStatuses} from "../../types/types";
 import {useAppDispatch} from "../../customHooks/useAppDispatch";
-import {getTasks} from "../../store/reducers/tasks-reducer";
+import {addTaskTC, deleteTaskTC, getTasksTC, updateTaskTC} from "../../store/reducers/tasks-reducer";
 import {useAppSelector} from "../../customHooks/useAppSelector";
 import Task from "../Task/Task";
-import {changeTodolistFilterValueAC} from "../../store/reducers/todolist-reducers";
+import {
+    changeTodolistFilterValueAC,
+    deleteTodolistTC,
+    updateTodolistTitleTC
+} from "../../store/reducers/todolist-reducers";
+import {Button, ButtonGroup, Card} from "@mui/material";
+import AddItemForm from "../AddItemForm/AddItemForm";
+import EditableSpan from "../EditableSpan/EditableSpan";
+import DeleteButton from "../DeleteButton/DeleteButton";
+import Box from "@mui/material/Box";
 
 type TodolistPropsType = {
     todolistId: string
@@ -27,30 +37,81 @@ export const Todolist = (props: TodolistPropsType) => {
     }
 
     useEffect(() => {
-        dispatch(getTasks(props.todolistId))
+        dispatch(getTasksTC(props.todolistId))
     }, [])
 
+    const deleteTodolist = () => {
+        debugger
+        dispatch(deleteTodolistTC(props.todolistId))
+    }
+    const updateTodolistTitle = (title: string) => {
+        dispatch(updateTodolistTitleTC(props.todolistId, title))
+    }
+    const changeTodolistFilterValue = (filterValue: FilterValueType) => {
+        dispatch(changeTodolistFilterValueAC(props.todolistId, filterValue))
+    }
+    const deleteTask = (taskId: string) => {
+        dispatch(deleteTaskTC(props.todolistId, taskId))
+    }
+
+    const addTask = (title: string) => {
+        dispatch(addTaskTC(props.todolistId, title))
+    }
+
+    const updateTaskStatus = (taskId: string, status: TaskStatuses) => {
+        dispatch(updateTaskTC(props.todolistId, taskId, {status}))
+    }
+
+    const updateTaskTitle = (taskId: string, title: string) => {
+        dispatch(updateTaskTC(props.todolistId, taskId, {title}))
+    }
+    const filterButtonStyle = (value: FilterValueType) => {
+        if (props.filter === value) {
+            return "contained"
+        }
+    }
+
     const tasksRender = filteredTasks(tasks, props.filter).map(task => {
-        return <li><Task title={task.title} status={task.status}/></li>
+
+        return <li>
+            <Task
+                title={task.title}
+                status={task.status}
+                deleteTask={() => deleteTask(task.id)}
+                updateTaskStatus={(status: TaskStatuses) => updateTaskStatus(task.id, status)}
+                updateTaskTitle={(title: string) => updateTaskTitle(task.id, title)}
+            />
+        </li>
     })
+
     return (
-        <div>
-            <h3>{props.title}</h3>
+        <Card className={s.card}>
+            <Box className={s.titleContainer}>
+                <h2><EditableSpan title={props.title} changeTitle={updateTodolistTitle}/></h2>
+                <DeleteButton callback={deleteTodolist}/>
+            </Box>
+            <AddItemForm label={"New Task"} getTitle={addTask}/>
             <ul>
                 {tasksRender}
             </ul>
-            <div>
-                <button onClick={() => dispatch(changeTodolistFilterValueAC(props.todolistId, 'all'))}>
+            <ButtonGroup size="small" className={s.buttonGroup}>
+                <Button
+                    onClick={() => changeTodolistFilterValue('all')}
+                    variant={filterButtonStyle('all')}>
                     All
-                </button>
-                <button onClick={() => dispatch(changeTodolistFilterValueAC(props.todolistId, 'active'))}>
+                </Button>
+                <Button
+                    onClick={() => changeTodolistFilterValue('active')}
+                    variant={filterButtonStyle('active')}>
                     Active
-                </button>
-                <button onClick={() => dispatch(changeTodolistFilterValueAC(props.todolistId, 'complete'))}>
+                </Button>
+                <Button
+                    onClick={() => changeTodolistFilterValue('complete')}
+                    variant={filterButtonStyle('complete')}>
                     Completed
-                </button>
-            </div>
-        </div>
+                </Button>
+            </ButtonGroup>
+        </Card>
     );
 };
 

@@ -1,4 +1,15 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+li {
+    list-style-type: none;
+}
+
 .App {
-    padding: 50px 100px;
+    padding-bottom: 20px;
 }
 
