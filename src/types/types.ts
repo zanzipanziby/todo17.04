@@ -9,6 +9,7 @@ import {
     SetTasksActionType,
     UpdateTaskActionType
 } from "../store/reducers/tasks-reducer";
+import {SetAppErrorActionType, setAppStatusActionType} from "../store/reducers/app-reducer";
 
 export type AuthMeDataType = {
     id: number
@@ -84,10 +85,17 @@ export type ResponseTaskType = {
     error: string
 
 }
+
+export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
+
 // ---- Reducers ---
 export type TodolistStateType = Array<TodolistDomainType>
 export type TasksStateType = {
     [key: string]: Array<ServerTaskType>
+}
+export type AppStateType = {
+    status: RequestStatusType
+    error: string | null
 }
 
 
@@ -103,3 +111,5 @@ export type ActionsType =
     | AddTodolistActionType
     | UpdateTodolistTitleActionType
     | DeleteTodolistActionType
+    | setAppStatusActionType
+    | SetAppErrorActionType

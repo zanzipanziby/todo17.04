@@ -2,6 +2,7 @@ import {ActionsType, ServerTaskType, TasksStateType, UpdateTaskDomainModelType} 
 import {Dispatch} from "redux";
 import {tasksAPI} from "../../api/api";
 import {RootStateType} from "../store";
+import {setAppErrorAC, setAppStatusAC} from "./app-reducer";
 
 export const tasksReducers = (state: TasksStateType = {}, action: ActionsType): TasksStateType => {
     switch (action.type) {
@@ -109,10 +110,16 @@ export const deleteTaskTC = (todolistId: string, taskId: string) => (dispatch: D
 }
 
 export const addTaskTC = (todolistId: string, title: string) => (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC('loading'))
     tasksAPI.addTask(todolistId, title)
         .then(data => {
+            dispatch(setAppStatusAC('succeeded'))
             if (data.resultCode === 0) {
                 dispatch(addTaskAC(todolistId, data.data.item))
+            } else {
+                if(data.messages.length){
+                    dispatch(setAppErrorAC(data.messages[0]))
+                } else {dispatch(setAppErrorAC('some error'))}
             }
         })
 }

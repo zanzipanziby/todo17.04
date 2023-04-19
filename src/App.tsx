@@ -3,6 +3,7 @@ import './App.css';
 import {TodolistsContainer} from "./components/TodolistContainer/TodolistsContainer";
 import {Container} from "@mui/material";
 import {AppBarComponent} from "./components/AppBar/AppBarComponent";
+import {CustomizedSnackbars} from "./components/ErrorSnackbar/ErrorSnackbar";
 
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
             <Container maxWidth={"lg"} >
                 <AppBarComponent/>
                 <TodolistsContainer/>
+                <CustomizedSnackbars/>
             </Container>
         </div>
     );

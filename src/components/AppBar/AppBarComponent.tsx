@@ -5,8 +5,11 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import s from './AppBarComponent.module.css'
+import {LinearProgress} from "@mui/material";
+import {useAppSelector} from "../../customHooks/useAppSelector";
 
 export  function AppBarComponent() {
+    const status = useAppSelector(state => state.app.status)
     return (
         <Box className={s.appBar}>
             <AppBar position="static">
@@ -17,6 +20,7 @@ export  function AppBarComponent() {
                     <Button color="inherit">Login</Button>
                 </Toolbar>
             </AppBar>
+            {status === 'loading' && <LinearProgress/>}
         </Box>
     );
 }
