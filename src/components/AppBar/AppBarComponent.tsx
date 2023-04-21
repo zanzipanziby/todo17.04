@@ -20,7 +20,7 @@ export  function AppBarComponent() {
                     <Button color="inherit">Login</Button>
                 </Toolbar>
             </AppBar>
-            {status === 'loading' && <LinearProgress/>}
+            {status === 'loading' ? <LinearProgress/> : <div style={{height: "4px"}}></div> }
         </Box>
     );
 }

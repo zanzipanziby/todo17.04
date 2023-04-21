@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import s from './Todolist.module.css'
-import {FilterValueType, ServerTaskType, TaskStatuses} from "../../types/types";
+import {FilterValueType, RequestStatusType, ServerTaskType, TaskStatuses} from "../../types/types";
 import {useAppDispatch} from "../../customHooks/useAppDispatch";
 import {addTaskTC, deleteTaskTC, getTasksTC, updateTaskTC} from "../../store/reducers/tasks-reducer";
 import {useAppSelector} from "../../customHooks/useAppSelector";
@@ -20,11 +20,13 @@ type TodolistPropsType = {
     todolistId: string
     filter: FilterValueType
     title: string
+    entityStatus: RequestStatusType
 }
 
 export const Todolist = (props: TodolistPropsType) => {
     const dispatch = useAppDispatch()
     const tasks = useAppSelector(state => state.tasks[props.todolistId])
+
     const filteredTasks = (tasks: ServerTaskType[], filter: FilterValueType) => {
         switch (filter) {
             case 'all':
@@ -88,9 +90,9 @@ export const Todolist = (props: TodolistPropsType) => {
         <Card className={s.card}>
             <Box className={s.titleContainer}>
                 <h2><EditableSpan title={props.title} changeTitle={updateTodolistTitle}/></h2>
-                <DeleteButton callback={deleteTodolist}/>
+                <DeleteButton callback={deleteTodolist} disabled={props.entityStatus === 'loading'}/>
             </Box>
-            <AddItemForm label={"New Task"} getTitle={addTask}/>
+            <AddItemForm label={"New Task"} getTitle={addTask} disabled={props.entityStatus === 'loading'}/>
             <ul>
                 {tasksRender}
             </ul>

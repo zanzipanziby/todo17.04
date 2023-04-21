@@ -1,7 +1,10 @@
 import {
     AddTodolistActionType,
-    ChangeTodolistFilterValueActionType, DeleteTodolistActionType,
-    setTodolistActionType, UpdateTodolistTitleActionType
+    ChangeTodolistEntityStatusActionType,
+    ChangeTodolistFilterValueActionType,
+    DeleteTodolistActionType,
+    setTodolistActionType,
+    UpdateTodolistTitleActionType
 } from "../store/reducers/todolist-reducers";
 import {
     AddTaskActionType,
@@ -40,7 +43,7 @@ export type TodolistResponseType = {
 }
 export type FilterValueType = 'all' | 'complete' | 'active'
 
-export type TodolistDomainType = TodolistResponseType & { filter: FilterValueType }
+export type TodolistDomainType = TodolistResponseType & { filter: FilterValueType, entityStatus: RequestStatusType }
 
 export enum TaskStatuses {
     New = 0,
@@ -113,3 +116,4 @@ export type ActionsType =
     | DeleteTodolistActionType
     | setAppStatusActionType
     | SetAppErrorActionType
+    | ChangeTodolistEntityStatusActionType

@@ -33,7 +33,7 @@ const Task = (props: TaskPropsType) => {
                 <Checkbox checked={props.status === TaskStatuses.Completed} onChange={onChangeHandler}/>
                 <EditableSpan title={props.title} changeTitle={props.updateTaskTitle}/>
             </Box>
-           <DeleteButton callback={props.deleteTask}/>
+           <DeleteButton callback={props.deleteTask} disabled={false}/>
         </Box>
     );
 };

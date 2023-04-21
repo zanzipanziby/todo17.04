@@ -3,6 +3,7 @@ import {Dispatch} from "redux";
 import {tasksAPI} from "../../api/api";
 import {RootStateType} from "../store";
 import {setAppErrorAC, setAppStatusAC} from "./app-reducer";
+import {changeTodolistEntityStatusAC} from "./todolist-reducers";
 
 export const tasksReducers = (state: TasksStateType = {}, action: ActionsType): TasksStateType => {
     switch (action.type) {
@@ -30,7 +31,7 @@ export const tasksReducers = (state: TasksStateType = {}, action: ActionsType): 
             }
         case "ADD_TODOLIST":
             return {
-                ...state, [action.payload.todolist.id]:[]
+                ...state, [action.payload.todolist.id]: []
             }
         case "DELETE_TODOLIST":
             const copyState = {...state}
@@ -94,38 +95,54 @@ export const updateTaskAC = (todolistId: string, taskId: string, updatedTask: Se
 // ------------  Thunk  --------------
 
 export const getTasksTC = (todolistId: string) => (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC("loading"))
     tasksAPI.getTasks(todolistId)
         .then(data => {
+            dispatch(setAppStatusAC("succeeded"))
             dispatch(setTasksAC(todolistId, data.items))
         })
 }
 
 export const deleteTaskTC = (todolistId: string, taskId: string) => (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC("loading"))
     tasksAPI.deleteTask(todolistId, taskId)
         .then(data => {
             if (data.resultCode === 0) {
+                dispatch(setAppStatusAC("succeeded"))
                 dispatch(deleteTaskAC(todolistId, taskId))
+            } else {
+                if (data.messages.length) {
+                    dispatch(setAppErrorAC(data.messages[0]))
+                } else {
+                    dispatch(setAppErrorAC('some error'))
+                }
             }
         })
 }
 
 export const addTaskTC = (todolistId: string, title: string) => (dispatch: Dispatch) => {
     dispatch(setAppStatusAC('loading'))
+    dispatch(changeTodolistEntityStatusAC(todolistId, "loading"))
     tasksAPI.addTask(todolistId, title)
         .then(data => {
             dispatch(setAppStatusAC('succeeded'))
             if (data.resultCode === 0) {
                 dispatch(addTaskAC(todolistId, data.data.item))
             } else {
-                if(data.messages.length){
+                if (data.messages.length) {
                     dispatch(setAppErrorAC(data.messages[0]))
-                } else {dispatch(setAppErrorAC('some error'))}
+                } else {
+                    dispatch(setAppErrorAC('some error'))
+                }
             }
+
+            dispatch(changeTodolistEntityStatusAC(todolistId, "succeeded"))
         })
 }
 
 export const updateTaskTC = (todolistId: string, taskId: string, updateModel: UpdateTaskDomainModelType) =>
     (dispatch: Dispatch, getState: () => RootStateType) => {
+        dispatch(setAppStatusAC("loading"))
         const task = getState().tasks[todolistId].find(t => t.id === taskId)
         if (!task) {
             return
@@ -141,8 +158,15 @@ export const updateTaskTC = (todolistId: string, taskId: string, updateModel: Up
         }
         tasksAPI.updateTask(todolistId, taskId, apiModel)
             .then(data => {
+                dispatch(setAppStatusAC("succeeded"))
                 if (data.resultCode === 0) {
                     dispatch(updateTaskAC(todolistId, taskId, data.data.item))
+                } else {
+                    if (data.messages.length) {
+                        dispatch(setAppErrorAC(data.messages[0]))
+                    } else {
+                        dispatch(setAppErrorAC('some error'))
+                    }
                 }
             })
     }

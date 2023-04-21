@@ -27,6 +27,7 @@ export const TodolistsContainer = () => {
                         todolistId={todolist.id}
                         filter={todolist.filter}
                         title={todolist.title}
+                        entityStatus={todolist.entityStatus}
                     />
             </Grid>
         )

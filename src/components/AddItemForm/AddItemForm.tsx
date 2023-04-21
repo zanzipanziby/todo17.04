@@ -7,6 +7,7 @@ import s from './AddItemForm.module.css'
 type AddItemFormPropsType = {
     label: string
     getTitle: (title: string) => void
+    disabled?: boolean
 }
 const AddItemForm = (props: AddItemFormPropsType) => {
     const [title, setTitle] = useState('')
@@ -31,9 +32,10 @@ const AddItemForm = (props: AddItemFormPropsType) => {
                 value={title} onChange={onChangeHandler}
                 error={error}
                 onBlur={() => setError(false)}
+                disabled={props.disabled}
             />
-            <IconButton>
-                <AddBoxIcon color={'primary'} onClick={onClickHandler}/>
+            <IconButton color={'primary'} onClick={onClickHandler} disabled={props.disabled}>
+                <AddBoxIcon  />
             </IconButton>
         </Box>
 
