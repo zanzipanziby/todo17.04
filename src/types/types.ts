@@ -13,6 +13,7 @@ import {
     UpdateTaskActionType
 } from "../store/reducers/tasks-reducer";
 import {SetAppErrorActionType, setAppStatusActionType} from "../store/reducers/app-reducer";
+import {SetIsLoggedInActionType} from "../store/reducers/login-reducer";
 
 export type AuthMeDataType = {
     id: number
@@ -104,6 +105,10 @@ export type AppStateType = {
     error: string | null
 }
 
+export type LoginStateType = {
+    isLoggedIn: boolean
+}
+
 
 // -------------  Actions Type  ----------------
 
@@ -121,3 +126,4 @@ export type ActionsType =
     | SetAppErrorActionType
     | ChangeTodolistEntityStatusActionType
     | ChangeTaskEntityStatusActionType
+    | SetIsLoggedInActionType

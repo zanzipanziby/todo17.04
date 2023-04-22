@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import s from './AppBarComponent.module.css'
 import {LinearProgress} from "@mui/material";
 import {useAppSelector} from "../../customHooks/useAppSelector";
+import {CustomizedSnackbars} from "../ErrorSnackbar/ErrorSnackbar";
 
 export  function AppBarComponent() {
     const status = useAppSelector(state => state.app.status)
@@ -21,6 +22,7 @@ export  function AppBarComponent() {
                 </Toolbar>
             </AppBar>
             {status === 'loading' ? <LinearProgress/> : <div style={{height: "4px"}}></div> }
+            <CustomizedSnackbars/>
         </Box>
     );
 }

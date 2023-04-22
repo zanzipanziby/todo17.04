@@ -3,7 +3,9 @@ import './App.css';
 import {TodolistsContainer} from "./components/TodolistContainer/TodolistsContainer";
 import {Container} from "@mui/material";
 import {AppBarComponent} from "./components/AppBar/AppBarComponent";
-import {CustomizedSnackbars} from "./components/ErrorSnackbar/ErrorSnackbar";
+import {Route, Routes} from 'react-router-dom'
+import {LoginPage} from "./components/LoginPage/LoginPage";
+
 
 
 function App() {
@@ -11,8 +13,12 @@ function App() {
         <div className="App">
             <Container maxWidth={"lg"} >
                 <AppBarComponent/>
-                <TodolistsContainer/>
-                <CustomizedSnackbars/>
+                <Routes>
+                    <Route path={"/"} element={<TodolistsContainer/>}/>
+                    <Route path={"/login"} element={<LoginPage/>}/>
+                </Routes>
+
+
             </Container>
         </div>
     );

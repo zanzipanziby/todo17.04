@@ -107,6 +107,9 @@ export const getTodolistTC = () => (dispatch: Dispatch) => {
             dispatch(setAppStatusAC("succeeded"))
             dispatch(setTodolistAC(data))
         })
+        .catch((error:AxiosError) => {
+            networkServerErrorHandle(error, dispatch)
+        })
 }
 
 export const addTodolistTC = (title: string) => (dispatch: Dispatch) => {
