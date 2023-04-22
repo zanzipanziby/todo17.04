@@ -7,7 +7,7 @@ import {
     UpdateTodolistTitleActionType
 } from "../store/reducers/todolist-reducers";
 import {
-    AddTaskActionType,
+    AddTaskActionType, ChangeTaskEntityStatusActionType,
     DeleteTaskActionType,
     SetTasksActionType,
     UpdateTaskActionType
@@ -64,6 +64,9 @@ export type ServerTaskType = {
     priority: number
     startDate: string
 }
+
+export type DomainTaskType = ServerTaskType & { entityStatus: RequestStatusType }
+
 export type UpdateTaskModelType = {
     title: string
     description: string
@@ -94,7 +97,7 @@ export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 // ---- Reducers ---
 export type TodolistStateType = Array<TodolistDomainType>
 export type TasksStateType = {
-    [key: string]: Array<ServerTaskType>
+    [key: string]: Array<DomainTaskType>
 }
 export type AppStateType = {
     status: RequestStatusType
@@ -117,3 +120,4 @@ export type ActionsType =
     | setAppStatusActionType
     | SetAppErrorActionType
     | ChangeTodolistEntityStatusActionType
+    | ChangeTaskEntityStatusActionType

@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import s from './Todolist.module.css'
-import {FilterValueType, RequestStatusType, ServerTaskType, TaskStatuses} from "../../types/types";
+import {DomainTaskType, FilterValueType, RequestStatusType, ServerTaskType, TaskStatuses} from "../../types/types";
 import {useAppDispatch} from "../../customHooks/useAppDispatch";
 import {addTaskTC, deleteTaskTC, getTasksTC, updateTaskTC} from "../../store/reducers/tasks-reducer";
 import {useAppSelector} from "../../customHooks/useAppSelector";
@@ -27,7 +27,7 @@ export const Todolist = (props: TodolistPropsType) => {
     const dispatch = useAppDispatch()
     const tasks = useAppSelector(state => state.tasks[props.todolistId])
 
-    const filteredTasks = (tasks: ServerTaskType[], filter: FilterValueType) => {
+    const filteredTasks = (tasks: DomainTaskType[], filter: FilterValueType) => {
         switch (filter) {
             case 'all':
                 return tasks
@@ -43,7 +43,6 @@ export const Todolist = (props: TodolistPropsType) => {
     }, [])
 
     const deleteTodolist = () => {
-        debugger
         dispatch(deleteTodolistTC(props.todolistId))
     }
     const updateTodolistTitle = (title: string) => {
@@ -82,6 +81,7 @@ export const Todolist = (props: TodolistPropsType) => {
                 deleteTask={() => deleteTask(task.id)}
                 updateTaskStatus={(status: TaskStatuses) => updateTaskStatus(task.id, status)}
                 updateTaskTitle={(title: string) => updateTaskTitle(task.id, title)}
+                entityStatus={task.entityStatus}
             />
         </li>
     })
@@ -89,7 +89,7 @@ export const Todolist = (props: TodolistPropsType) => {
     return (
         <Card className={s.card}>
             <Box className={s.titleContainer}>
-                <h2><EditableSpan title={props.title} changeTitle={updateTodolistTitle}/></h2>
+                <h2><EditableSpan title={props.title} changeTitle={updateTodolistTitle} disableEditMode={props.entityStatus === 'loading'}/></h2>
                 <DeleteButton callback={deleteTodolist} disabled={props.entityStatus === 'loading'}/>
             </Box>
             <AddItemForm label={"New Task"} getTitle={addTask} disabled={props.entityStatus === 'loading'}/>

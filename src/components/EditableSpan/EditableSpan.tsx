@@ -4,6 +4,7 @@ import {TextField} from "@mui/material";
 type EditableSpanPropsType = {
     title: string
     changeTitle: (title: string) => void
+    disableEditMode: boolean
 }
 const EditableSpan = (props: EditableSpanPropsType) => {
     const [editMode, setEditMode] = useState(false)
@@ -14,18 +15,21 @@ const EditableSpan = (props: EditableSpanPropsType) => {
         setError(false)
     }
     const onBlurHandler = () => {
-        if(!title) {
+        if (!title.trim()) {
             setError(true)
             return
         }
-        props.changeTitle(title)
+        props.changeTitle(title.trim())
         setEditMode(false)
 
     }
 
-    if(editMode) {
+    const onDoubleClickHandler = () => {
+        !props.disableEditMode && setEditMode(true)
+    }
+
+    if (editMode) {
         return <TextField
-            onDoubleClick={()=> setEditMode(false)}
             onChange={onChangeHandler}
             onBlur={onBlurHandler}
             error={error}
@@ -37,7 +41,7 @@ const EditableSpan = (props: EditableSpanPropsType) => {
         />
     }
 
-        return <span onDoubleClick={()=>setEditMode(true)}>{props.title}</span>
+    return <span onDoubleClick={onDoubleClickHandler}>{props.title}</span>
 
 };
 

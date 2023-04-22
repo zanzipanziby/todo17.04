@@ -1,5 +1,5 @@
 import React, {ChangeEvent} from 'react';
-import {TaskStatuses} from "../../types/types";
+import {RequestStatusType, TaskStatuses} from "../../types/types";
 import {Checkbox} from "@mui/material";
 
 import Box from "@mui/material/Box";
@@ -11,6 +11,7 @@ import DeleteButton from "../DeleteButton/DeleteButton";
 type TaskPropsType = {
     title: string
     status: TaskStatuses
+    entityStatus: RequestStatusType
     deleteTask: () => void
     updateTaskStatus: (status: TaskStatuses) => void
     updateTaskTitle: (title: string) => void
@@ -31,9 +32,9 @@ const Task = (props: TaskPropsType) => {
         <Box className={s.taskContainer}>
             <Box>
                 <Checkbox checked={props.status === TaskStatuses.Completed} onChange={onChangeHandler}/>
-                <EditableSpan title={props.title} changeTitle={props.updateTaskTitle}/>
+                <EditableSpan title={props.title} changeTitle={props.updateTaskTitle} disableEditMode={props.entityStatus === 'loading'}/>
             </Box>
-           <DeleteButton callback={props.deleteTask} disabled={false}/>
+           <DeleteButton callback={props.deleteTask} disabled={props.entityStatus === 'loading'}/>
         </Box>
     );
 };
