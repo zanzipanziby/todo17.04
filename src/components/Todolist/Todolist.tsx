@@ -38,10 +38,6 @@ export const Todolist = (props: TodolistPropsType) => {
         }
     }
 
-    useEffect(() => {
-        dispatch(getTasksTC(props.todolistId))
-    }, [])
-
     const deleteTodolist = () => {
         dispatch(deleteTodolistTC(props.todolistId))
     }

@@ -7,13 +7,20 @@ import {addTodolistTC, getTodolistTC} from "../../store/reducers/todolist-reduce
 import s from "./TodolistsContainer.module.css"
 import {Grid} from "@mui/material";
 import AddItemForm from "../AddItemForm/AddItemForm";
+import {Navigate} from "react-router-dom";
 
 export const TodolistsContainer = () => {
     const dispatch = useAppDispatch()
     const todolists = useAppSelector(state => state.todolists)
+    const isLoggedIn = useAppSelector(state => state.login.isLoggedIn)
     useEffect(() => {
         dispatch(getTodolistTC())
     }, [])
+
+    if(!isLoggedIn) {
+        return <Navigate to={"/login"}/>
+    }
+
     const addTodolist = (title:string) => {
         dispatch(addTodolistTC(title))
     }

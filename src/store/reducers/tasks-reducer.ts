@@ -63,6 +63,8 @@ export const tasksReducers = (state: TasksStateType = {}, action: ActionsType): 
                         : task
                 })
             }
+        case "CLEAR_STATE":
+            return {}
         default:
             return state
     }
@@ -143,7 +145,7 @@ export const getTasksTC = (todolistId: string) => (dispatch: Dispatch) => {
 
 export const deleteTaskTC = (todolistId: string, taskId: string) => (dispatch: Dispatch) => {
     dispatch(setAppStatusAC("loading"))
-    dispatch(changeTaskEntityStatusAC(todolistId,taskId,"loading"))
+    dispatch(changeTaskEntityStatusAC(todolistId, taskId, "loading"))
     tasksAPI.deleteTask(todolistId, taskId)
         .then(data => {
             if (data.resultCode === 0) {
@@ -152,10 +154,10 @@ export const deleteTaskTC = (todolistId: string, taskId: string) => (dispatch: D
             } else {
                 appServerErrorHandle(data, dispatch)
             }
-            dispatch(changeTaskEntityStatusAC(todolistId,taskId,"succeeded"))
+            dispatch(changeTaskEntityStatusAC(todolistId, taskId, "succeeded"))
         })
-        .catch((error:AxiosError) => {
-            networkServerErrorHandle(error,dispatch)
+        .catch((error: AxiosError) => {
+            networkServerErrorHandle(error, dispatch)
         })
 
 }
@@ -174,7 +176,7 @@ export const addTaskTC = (todolistId: string, title: string) => (dispatch: Dispa
             dispatch(changeTodolistEntityStatusAC(todolistId, "succeeded"))
         })
         .catch((error: AxiosError) => {
-            networkServerErrorHandle(error,dispatch)
+            networkServerErrorHandle(error, dispatch)
         })
 }
 
@@ -200,10 +202,10 @@ export const updateTaskTC = (todolistId: string, taskId: string, updateModel: Up
                 if (data.resultCode === 0) {
                     dispatch(updateTaskAC(todolistId, taskId, data.data.item))
                 } else {
-                   appServerErrorHandle(data, dispatch)
+                    appServerErrorHandle(data, dispatch)
                 }
             })
             .catch((error: AxiosError) => {
-               networkServerErrorHandle(error,dispatch)
+                networkServerErrorHandle(error, dispatch)
             })
     }

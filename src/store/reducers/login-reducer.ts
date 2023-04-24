@@ -4,6 +4,7 @@ import {Dispatch} from "redux";
 import {setAppStatusAC} from "./app-reducer";
 import {appServerErrorHandle, networkServerErrorHandle} from "../../utils/error-utils";
 import {AxiosError} from "axios";
+import {clearStateAC} from "./todolist-reducers";
 
 const initialState: LoginStateType = {
     isLoggedIn: false
@@ -40,6 +41,23 @@ export const loginTC = (data: LoginRequestType) => (dispatch: Dispatch) => {
                 dispatch(setIsLoggedInAC(true))
             } else {
                 appServerErrorHandle(res, dispatch)
+            }
+            dispatch(setAppStatusAC("succeeded"))
+        })
+        .catch((error: AxiosError) => {
+            networkServerErrorHandle(error, dispatch)
+        })
+}
+
+export const logoutTC = () => (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC("loading"))
+    authAPI.logout()
+        .then(data => {
+            if (data.resultCode === 0) {
+                dispatch(setIsLoggedInAC(false))
+                dispatch(clearStateAC())
+            } else {
+                appServerErrorHandle(data, dispatch)
             }
             dispatch(setAppStatusAC("succeeded"))
         })

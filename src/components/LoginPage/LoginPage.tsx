@@ -23,10 +23,7 @@ type FormikErrorType = {
 }
 export const LoginPage = () => {
     const dispatch = useAppDispatch()
-    const isLoggedIn = useAppSelector(state=> state.login.isLoggedIn)
-    if(isLoggedIn) {
-
-    }
+    const isLoggedIn = useAppSelector(state => state.login.isLoggedIn)
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -55,8 +52,8 @@ export const LoginPage = () => {
         },
     });
 
-    if(isLoggedIn) {
-       return  <Navigate to={'/'}/>
+    if (isLoggedIn) {
+        return <Navigate to={'/'}/>
     }
 
     return <Grid container justifyContent={'center'} height={"60vh"} alignItems={"center"}>

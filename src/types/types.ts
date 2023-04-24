@@ -1,7 +1,7 @@
 import {
     AddTodolistActionType,
     ChangeTodolistEntityStatusActionType,
-    ChangeTodolistFilterValueActionType,
+    ChangeTodolistFilterValueActionType, ClearStateActionType,
     DeleteTodolistActionType,
     setTodolistActionType,
     UpdateTodolistTitleActionType
@@ -12,7 +12,11 @@ import {
     SetTasksActionType,
     UpdateTaskActionType
 } from "../store/reducers/tasks-reducer";
-import {SetAppErrorActionType, setAppStatusActionType} from "../store/reducers/app-reducer";
+import {
+    SetAppErrorActionType,
+    SetAppInitializedActionType,
+    setAppStatusActionType
+} from "../store/reducers/app-reducer";
 import {SetIsLoggedInActionType} from "../store/reducers/login-reducer";
 
 export type AuthMeDataType = {
@@ -103,6 +107,7 @@ export type TasksStateType = {
 export type AppStateType = {
     status: RequestStatusType
     error: string | null
+    initialized: boolean
 }
 
 export type LoginStateType = {
@@ -127,3 +132,5 @@ export type ActionsType =
     | ChangeTodolistEntityStatusActionType
     | ChangeTaskEntityStatusActionType
     | SetIsLoggedInActionType
+    | SetAppInitializedActionType
+    | ClearStateActionType
