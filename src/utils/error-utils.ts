@@ -4,14 +4,14 @@ import {Dispatch} from "redux";
 import {AxiosError} from "axios";
 
 export const appServerErrorHandle = <T>(data: ResponseType<T>, dispatch: Dispatch) => {
-    if (data.messages.length) {
-        dispatch(setAppErrorAC(data.messages[0]))
-    } else {
-        dispatch(setAppErrorAC('some error'))
-    }
+	if (data.messages.length) {
+		dispatch(setAppErrorAC({error: data.messages[0]}))
+	} else {
+		dispatch(setAppErrorAC({error: 'some error'}))
+	}
 }
 
 export const networkServerErrorHandle = (error: AxiosError, dispatch: Dispatch) => {
-    dispatch(setAppErrorAC(error.message ? error.message : "some error"))
-    dispatch(setAppStatusAC('failed'))
+	dispatch(setAppErrorAC({error: error.message ? error.message : "some error"}))
+	dispatch(setAppStatusAC({status: 'failed'}))
 }
