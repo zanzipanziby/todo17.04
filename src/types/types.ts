@@ -1,99 +1,81 @@
-import {
-    AddTodolistActionType,
-    ChangeTodolistEntityStatusActionType,
-    ChangeTodolistFilterValueActionType, ClearStateActionType,
-    DeleteTodolistActionType,
-    setTodolistActionType,
-    UpdateTodolistTitleActionType
-} from "../store/reducers/todolist-reducers";
-import {
-    AddTaskActionType, ChangeTaskEntityStatusActionType,
-    DeleteTaskActionType,
-    SetTasksActionType,
-    UpdateTaskActionType
-} from "../store/reducers/tasks-reducer";
-import {
-    SetAppErrorActionType,
-    SetAppInitializedActionType,
-    setAppStatusActionType
-} from "../store/reducers/app-reducer";
-import {SetIsLoggedInActionType} from "../store/reducers/login-reducer";
+
+
 
 export type AuthMeDataType = {
-    id: number
-    email: string
-    login: string
+	id: number
+	email: string
+	login: string
 }
 export type ResponseType<T = {}> = {
-    data: T
-    resultCode: number
-    messages: Array<string>
-    fieldsErrors: Array<string>
+	data: T
+	resultCode: number
+	messages: Array<string>
+	fieldsErrors: Array<string>
 }
 
 
 //requestTypes
 export type LoginRequestType = {
-    email: string
-    password: string
-    rememberMe?: boolean
-    captcha?: boolean
+	email: string
+	password: string
+	rememberMe?: boolean
+	captcha?: boolean
 }
 
 export type TodolistResponseType = {
-    id: string
-    title: string
-    addedDate: string
-    order: number
+	id: string
+	title: string
+	addedDate: string
+	order: number
 }
 export type FilterValueType = 'all' | 'complete' | 'active'
 
 export type TodolistDomainType = TodolistResponseType & { filter: FilterValueType, entityStatus: RequestStatusType }
 
 export enum TaskStatuses {
-    New = 0,
-    InProgress = 1,
-    Completed = 2,
-    Draft = 3
+	New = 0,
+	InProgress = 1,
+	Completed = 2,
+	Draft = 3
 }
 
 export type ServerTaskType = {
-    id: string
-    title: string
-    todoListId: string
-    status: TaskStatuses
-    addedDate: string
-    deadline: null
-    description: string
-    order: number
-    priority: number
-    startDate: string
+	id: string
+	title: string
+	todoListId: string
+	status: TaskStatuses
+	addedDate: string
+	deadline: null
+	description: string
+	order: number
+	priority: number
+	startDate: string
 }
 
 export type DomainTaskType = ServerTaskType & { entityStatus: RequestStatusType }
 
 export type UpdateTaskModelType = {
-    title: string
-    description: string
-    status: TaskStatuses
-    priority: number
-    startDate: string
-    deadline: string | null
+	title: string
+	description: string
+	status: TaskStatuses
+	priority: number
+	startDate: string
+	deadline: string | null
 }
 
 export type UpdateTaskDomainModelType = {
-    title?: string
-    description?: string
-    status?: TaskStatuses
-    priority?: number
-    startDate?: string
-    deadline?: string | null
+	title?: string
+	description?: string
+	status?: TaskStatuses
+	priority?: number
+	startDate?: string
+	deadline?: string | null
 }
 
 export type ResponseTaskType = {
-    items: ServerTaskType[]
-    totalCount: number
-    error: string
+	items: ServerTaskType[]
+	totalCount: number
+	error: string
 
 }
 
@@ -102,35 +84,16 @@ export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 // ---- Reducers ---
 export type TodolistStateType = Array<TodolistDomainType>
 export type TasksStateType = {
-    [key: string]: Array<DomainTaskType>
+	[key: string]: Array<DomainTaskType>
 }
 export type AppStateType = {
-    status: RequestStatusType
-    error: string | null
-    initialized: boolean
+	status: RequestStatusType
+	error: string | null
+	initialized: boolean
 }
 
 export type LoginStateType = {
-    isLoggedIn: boolean
+	isLoggedIn: boolean
 }
 
 
-// -------------  Actions Type  ----------------
-
-export type ActionsType =
-    | setTodolistActionType
-    | SetTasksActionType
-    | ChangeTodolistFilterValueActionType
-    | DeleteTaskActionType
-    | AddTaskActionType
-    | UpdateTaskActionType
-    | AddTodolistActionType
-    | UpdateTodolistTitleActionType
-    | DeleteTodolistActionType
-    | setAppStatusActionType
-    | SetAppErrorActionType
-    | ChangeTodolistEntityStatusActionType
-    | ChangeTaskEntityStatusActionType
-    | SetIsLoggedInActionType
-    | SetAppInitializedActionType
-    | ClearStateActionType
