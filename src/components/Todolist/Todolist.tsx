@@ -48,7 +48,7 @@ export const Todolist = (props: TodolistPropsType) => {
 		dispatch(changeTodolistFilterValueAC({todolistId: props.todolistId, filter: filterValue}))
 	}
 	const deleteTask = (taskId: string) => {
-		dispatch(deleteTaskTC(props.todolistId, taskId))
+		dispatch(deleteTaskTC({todolistId: props.todolistId, taskId: taskId}))
 	}
 
 	const addTask = (title: string) => {

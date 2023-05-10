@@ -1,16 +1,10 @@
-import {
-	FilterValueType,
-	RequestStatusType,
-	TodolistDomainType,
-	TodolistResponseType
-} from "../../types/types";
+import {FilterValueType, RequestStatusType, TodolistDomainType, TodolistResponseType} from "../../types/types";
 import {Dispatch} from "redux";
 import {todolistAPI} from "../../api/api";
 import {setAppStatusAC} from "./app-reducer";
 import {appServerErrorHandle, networkServerErrorHandle} from "../../utils/error-utils";
 import {AxiosError} from "axios";
 import {getTasksTC} from "./tasks-reducer";
-import {ThunkDispatch} from "redux-thunk";
 import {AppThunkDispatch} from "../../customHooks/useAppDispatch";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 

@@ -1,5 +1,5 @@
 import {TasksStateType, TaskStatuses} from "../../../types/types";
-import {deleteTaskAC, tasksReducers} from "../tasks-reducer";
+import {deleteTaskTC, tasksReducers} from "../tasks-reducer";
 
 export let startState: TasksStateType = {}
 beforeEach(() => {
@@ -56,7 +56,12 @@ beforeEach(() => {
 })
 
 test('task should be deleted',()=> {
-	const action = deleteTaskAC({todolistId:'todolistId1', taskId: "1"})
+	const action = deleteTaskTC.fulfilled(
+		{todolistId:'todolistId1', taskId: "1"},
+		"",
+		{todolistId:'todolistId1', taskId: "1"}
+
+		)
 	const endState = tasksReducers(startState, action)
 
 	expect(endState['todolistId1'].length).toBe(1)
