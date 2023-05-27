@@ -1,8 +1,8 @@
-import { AppStateType, RequestStatusType} from "../../types/types";
-import {Dispatch} from "redux";
+import {AppStateType, RequestStatusType} from "../../types/types";
 import {authAPI} from "../../api/api";
 import {setIsLoggedInAC} from "./login-reducer";
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {appServerErrorHandle} from "../../utils/error-utils";
 
 const initialState: AppStateType = {
 	initialized: false,
@@ -17,12 +17,18 @@ const slice = createSlice({
 			state.status = action.payload.status
 		},
 		setAppErrorAC(state, action: PayloadAction<{ error: string | null }>) {
-			state.error= action.payload.error
+			state.error = action.payload.error
 		},
-		setAppInitializedAC(state, action: PayloadAction<{ isInitialized: boolean }>) {
-			state.initialized = action.payload.isInitialized
-		}
+		// setAppInitializedAC(state, action: PayloadAction<{ isInitialized: boolean }>) {
+		// 	state.initialized = action.payload.isInitialized
+		// }
 
+	},
+	extraReducers: builder => {
+		// TODO добавить реакцию на диспатч санок других слайсов(крутили, ерроры итд) с помощью addMatcher
+		builder.addCase(initializeAppTC.fulfilled, state => {
+			state.initialized = true
+		})
 	}
 })
 
@@ -31,7 +37,7 @@ export const appReducer = slice.reducer
 export const {
 	setAppStatusAC,
 	setAppErrorAC,
-	setAppInitializedAC
+	// setAppInitializedAC
 } = slice.actions
 
 // export const appReducer = (state: AppStateType = initialState, action: ActionsType): AppStateType => {
@@ -79,12 +85,27 @@ export const {
 
 // --------- Thunk ---------------
 
-export const initializeAppTC = () => (dispatch: Dispatch) => {
-	authAPI.authMe()
-		.then((data) => {
-			if (data.resultCode === 0) {
-				dispatch(setIsLoggedInAC({isLoggedIn: true}))
-			}
-			dispatch(setAppInitializedAC({isInitialized: true}))
-		})
-}
+
+export const initializeAppTC = createAsyncThunk(
+	"app/initialize",
+	async (arg, thunkAPI) => {
+		const dispatch = thunkAPI.dispatch
+		const res = await authAPI.authMe()
+		if (res.data.resultCode === 0) {
+			dispatch(setIsLoggedInAC({isLoggedIn: true}))
+		} else {
+			appServerErrorHandle(res.data, dispatch)
+		}
+		// dispatch(setAppInitializedAC({isInitialized: true}))
+	}
+)
+
+// export const initializeAppTC = () => (dispatch: Dispatch) => {
+// 	authAPI.authMe()
+// 		.then((data) => {
+// 			if (data.resultCode === 0) {
+// 				dispatch(setIsLoggedInAC({isLoggedIn: true}))
+// 			}
+// 			dispatch(setAppInitializedAC({isInitialized: true}))
+// 		})
+// }

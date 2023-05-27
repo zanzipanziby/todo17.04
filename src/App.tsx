@@ -1,4 +1,4 @@
-import React, {useLayoutEffect} from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
 import {TodolistsContainer} from "./components/TodolistContainer/TodolistsContainer";
 import {CircularProgress, Container} from "@mui/material";
@@ -7,14 +7,14 @@ import {Route, Routes} from 'react-router-dom'
 import {LoginPage} from "./components/LoginPage/LoginPage";
 import {useAppSelector} from "./customHooks/useAppSelector";
 import {useAppDispatch} from "./customHooks/useAppDispatch";
-import {initializeAppTC, setAppInitializedAC} from "./store/reducers/app-reducer";
+import {initializeAppTC} from "./store/reducers/app-reducer";
 
 
 function App() {
     const dispatch = useAppDispatch()
-    useLayoutEffect(() => {
+    useEffect(() => {
         dispatch(initializeAppTC())
-    },[])
+    },[dispatch])
     const initialized = useAppSelector(state => state.app.initialized)
 
     if (!initialized) {

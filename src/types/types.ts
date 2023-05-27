@@ -63,14 +63,7 @@ export type UpdateTaskModelType = {
 	deadline: string | null
 }
 
-export type UpdateTaskDomainModelType = {
-	title?: string
-	description?: string
-	status?: TaskStatuses
-	priority?: number
-	startDate?: string
-	deadline?: string | null
-}
+export type UpdateTaskDomainModelType = Partial<UpdateTaskModelType>
 
 export type ResponseTaskType = {
 	items: ServerTaskType[]
