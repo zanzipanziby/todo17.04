@@ -34,6 +34,7 @@ type TodolistPropsType = {
 
 export const Todolist = (props: TodolistPropsType) => {
   const dispatch = useAppDispatch();
+  //todo рефактор таскс селектора
   const tasks = useAppSelector((state) => state.tasks[props.todolistId]);
 
   const filteredTasks = (tasks: DomainTaskType[], filter: FilterValueType) => {

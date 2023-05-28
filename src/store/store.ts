@@ -1,11 +1,9 @@
-import {applyMiddleware, combineReducers, createStore} from "redux";
-import {todolistReducers} from "./reducers/todolist-reducers";
-import {tasksReducers} from "./reducers/tasks-reducer";
-import thunk from "redux-thunk";
-import {appReducer} from "./reducers/app-reducer";
-import {loginReducer} from "./reducers/login-reducer";
-import {configureStore} from "@reduxjs/toolkit";
-
+import { combineReducers } from "redux";
+import { todolistReducers } from "./reducers/todolist-reducers";
+import { tasksReducers } from "./reducers/tasks-reducer";
+import { appReducer } from "./reducers/app-reducer";
+import { loginReducer } from "./reducers/login-reducer";
+import { configureStore } from "@reduxjs/toolkit";
 
 
 const rootReducer = combineReducers({
@@ -23,6 +21,9 @@ export const store = configureStore({
 
 export type RootStateType = ReturnType<typeof rootReducer>
 
+
+
+ //
 //@ts-ignore
 window.store = store
 

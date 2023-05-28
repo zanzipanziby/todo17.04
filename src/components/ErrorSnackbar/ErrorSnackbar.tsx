@@ -1,10 +1,11 @@
-import React from 'react';
-import Stack from '@mui/material/Stack';
-import Snackbar from '@mui/material/Snackbar';
-import MuiAlert, {AlertProps} from '@mui/material/Alert';
-import {useAppSelector} from "../../customHooks/useAppSelector";
-import {useAppDispatch} from "../../customHooks/useAppDispatch";
-import {setAppErrorAC} from "../../store/reducers/app-reducer";
+import React from "react";
+import Stack from "@mui/material/Stack";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
+import { useAppSelector } from "../../customHooks/useAppSelector";
+import { useAppDispatch } from "../../customHooks/useAppDispatch";
+import { setAppErrorAC } from "../../store/reducers/app-reducer";
+import { appSelectors } from "../../store/selectors";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 	props,
@@ -14,7 +15,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 });
 
 export function CustomizedSnackbars() {
-	const error = useAppSelector(state => state.app.error)
+	const error = useAppSelector(appSelectors.selectError)
 	const dispatch = useAppDispatch()
 	const isOpen = error !== null
 
