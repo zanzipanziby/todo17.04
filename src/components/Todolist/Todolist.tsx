@@ -6,24 +6,18 @@ import {
   RequestStatusType,
   TaskStatuses,
 } from "../../types/types";
-import { useAppDispatch } from "../../customHooks/useAppDispatch";
-import {
-  addTaskTC,
-  deleteTaskTC,
-  updateTaskTC,
-} from "../../store/reducers/tasks-reducer";
+
+import { tasksActions } from "../../store/reducers/tasks-reducer";
 import { useAppSelector } from "../../customHooks/useAppSelector";
 import Task from "../Task/Task";
-import {
-  changeTodolistFilterValueAC,
-  deleteTodolistTC,
-  updateTodolistTitleTC,
-} from "../../store/reducers/todolist-reducers";
+import { todolistsActions } from "../../store/reducers/todolist-reducers";
 import { Button, ButtonGroup, Card } from "@mui/material";
 import AddItemForm from "../AddItemForm/AddItemForm";
 import EditableSpan from "../EditableSpan/EditableSpan";
 import DeleteButton from "../DeleteButton/DeleteButton";
 import Box from "@mui/material/Box";
+import { tasksSelectors } from "../../store/selectors";
+import { useActions } from "../../customHooks/useActions";
 
 type TodolistPropsType = {
   todolistId: string;
@@ -33,9 +27,17 @@ type TodolistPropsType = {
 };
 
 export const Todolist = (props: TodolistPropsType) => {
-  const dispatch = useAppDispatch();
-  //todo рефактор таскс селектора
-  const tasks = useAppSelector((state) => state.tasks[props.todolistId]);
+  const {
+    deleteTodolistTC,
+    updateTodolistTitleTC,
+    changeTodolistFilterValueAC,
+  } = useActions(todolistsActions);
+  const { updateTaskTC, addTaskTC, deleteTaskTC } = useActions(tasksActions);
+
+  //todo need refactoring tasks selector
+  const tasks = useAppSelector((state) =>
+    tasksSelectors.selectTasksForTodolist(state, props.todolistId)
+  );
 
   const filteredTasks = (tasks: DomainTaskType[], filter: FilterValueType) => {
     switch (filter) {
@@ -49,43 +51,39 @@ export const Todolist = (props: TodolistPropsType) => {
   };
 
   const deleteTodolist = () => {
-    dispatch(deleteTodolistTC({ todolistId: props.todolistId }));
+    deleteTodolistTC({ todolistId: props.todolistId });
   };
   const updateTodolistTitle = (title: string) => {
-    dispatch(updateTodolistTitleTC({ todolistId: props.todolistId, title }));
+    updateTodolistTitleTC({ todolistId: props.todolistId, title });
   };
   const changeTodolistFilterValue = (filterValue: FilterValueType) => {
-    dispatch(
-      changeTodolistFilterValueAC({
-        todolistId: props.todolistId,
-        filter: filterValue,
-      })
-    );
+    changeTodolistFilterValueAC({
+      todolistId: props.todolistId,
+      filter: filterValue,
+    });
   };
   const deleteTask = (taskId: string) => {
-    dispatch(deleteTaskTC({ todolistId: props.todolistId, taskId: taskId }));
+    deleteTaskTC({ todolistId: props.todolistId, taskId: taskId });
   };
 
   const addTask = (title: string) => {
-    dispatch(addTaskTC({ todolistId: props.todolistId, title }));
+    addTaskTC({ todolistId: props.todolistId, title });
   };
 
   const updateTaskStatus = (taskId: string, status: TaskStatuses) => {
-    const arg = {
+    updateTaskTC({
       todolistId: props.todolistId,
       taskId,
       updateModel: { status: status },
-    };
-    dispatch(updateTaskTC(arg));
+    });
   };
 
   const updateTaskTitle = (taskId: string, title: string) => {
-    const arg = {
+    updateTaskTC({
       todolistId: props.todolistId,
       taskId,
       updateModel: { title },
-    };
-    dispatch(updateTaskTC(arg));
+    });
   };
   const filterButtonStyle = (value: FilterValueType) => {
     if (props.filter === value) {

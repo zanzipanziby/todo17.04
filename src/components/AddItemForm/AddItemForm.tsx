@@ -1,8 +1,8 @@
-import React, {ChangeEvent, useState} from 'react';
-import {IconButton, TextField} from "@mui/material";
+import React, { ChangeEvent, useState } from "react";
+import { IconButton, TextField } from "@mui/material";
 import Box from "@mui/material/Box";
-import AddBoxIcon from '@mui/icons-material/AddBox';
-import s from './AddItemForm.module.css'
+import AddBoxIcon from "@mui/icons-material/AddBox";
+import s from "./AddItemForm.module.css";
 
 type AddItemFormPropsType = {
     label: string

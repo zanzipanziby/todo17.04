@@ -10,11 +10,11 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { Paper } from "@mui/material";
 import { useFormik } from "formik";
-import { useAppDispatch } from "../../customHooks/useAppDispatch";
-import { loginTC } from "../../store/reducers/login-reducer";
 import { useAppSelector } from "../../customHooks/useAppSelector";
 import { Navigate } from "react-router-dom";
 import { loginSelectors } from "../../store/selectors";
+import { loginActions } from "../../store/reducers/login-reducer";
+import { useActions } from "../../customHooks/useActions";
 
 type FormikErrorType = {
   email?: string;
@@ -22,8 +22,8 @@ type FormikErrorType = {
   rememberMe?: boolean;
 };
 export const LoginPage = () => {
-  const dispatch = useAppDispatch();
   const isLoggedIn = useAppSelector(loginSelectors.selectIsLoggedIn);
+  const { loginTC } = useActions(loginActions);
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -49,7 +49,7 @@ export const LoginPage = () => {
       return errors;
     },
     onSubmit: (values) => {
-      dispatch(loginTC(values));
+      loginTC(values);
     },
   });
 

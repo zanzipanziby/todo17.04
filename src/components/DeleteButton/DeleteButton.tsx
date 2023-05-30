@@ -1,7 +1,7 @@
-import React from 'react';
+import React from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
-import {IconButton} from "@mui/material";
-import s from './DeleteButton.module.css'
+import { IconButton } from "@mui/material";
+import s from "./DeleteButton.module.css";
 
 
 type DeleteButtonPropsType = {

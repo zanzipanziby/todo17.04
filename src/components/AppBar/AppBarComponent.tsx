@@ -8,17 +8,17 @@ import s from "./AppBarComponent.module.css";
 import { LinearProgress } from "@mui/material";
 import { useAppSelector } from "../../customHooks/useAppSelector";
 import { CustomizedSnackbars } from "../ErrorSnackbar/ErrorSnackbar";
-import { logoutTC } from "../../store/reducers/login-reducer";
-import { useAppDispatch } from "../../customHooks/useAppDispatch";
-import {appSelectors, loginSelectors} from "../../store/selectors";
+import { loginActions } from "../../store/reducers/login-reducer";
+import { appSelectors, loginSelectors } from "../../store/selectors";
+import { useActions } from "../../customHooks/useActions";
 
 export function AppBarComponent() {
   const status = useAppSelector(appSelectors.selectStatus);
   const isLoggedIn = useAppSelector(loginSelectors.selectIsLoggedIn);
-  const dispatch = useAppDispatch();
+  const { logoutTC } = useActions(loginActions);
 
   const logoutHandler = () => {
-    dispatch(logoutTC());
+    logoutTC();
   };
   return (
     <Box className={s.appBar}>

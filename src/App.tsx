@@ -1,21 +1,21 @@
 import React, { useEffect } from "react";
 import "./App.css";
 import { TodolistsContainer } from "./components/TodolistContainer/TodolistsContainer";
-import { CircularProgress, Container } from "@mui/material";
+import { CircularProgress, Container, Paper } from "@mui/material";
 import { AppBarComponent } from "./components/AppBar/AppBarComponent";
 import { Route, Routes } from "react-router-dom";
 import { LoginPage } from "./components/LoginPage/LoginPage";
-import { useAppSelector } from "./customHooks/useAppSelector";
-import { useAppDispatch } from "./customHooks/useAppDispatch";
-import { initializeAppTC } from "./store/reducers/app-reducer";
 import { selectInitialized } from "./store/selectors/app.selectors";
+import { useAppSelector } from "./customHooks/useAppSelector";
+import { useActions } from "./customHooks/useActions";
+import { appActions } from "./store/reducers/app-reducer";
 
 function App() {
-  const dispatch = useAppDispatch();
+  const { initializeAppTC } = useActions(appActions);
   const initialized = useAppSelector(selectInitialized);
   useEffect(() => {
-    dispatch(initializeAppTC());
-  }, [dispatch]);
+    initializeAppTC();
+  }, [initializeAppTC]);
 
   if (!initialized) {
     return (
@@ -31,12 +31,14 @@ function App() {
 
   return (
     <div className="App">
-      <Container maxWidth={"lg"}>
-        <AppBarComponent />
-        <Routes>
-          <Route path={"/"} element={<TodolistsContainer />} />
-          <Route path={"/login"} element={<LoginPage />} />
-        </Routes>
+      <Container maxWidth={"lg"} >
+        <Paper className={"appContainer"}>
+          <AppBarComponent />
+          <Routes>
+            <Route path={"/"} element={<TodolistsContainer />} />
+            <Route path={"/login"} element={<LoginPage />} />
+          </Routes>
+        </Paper>
       </Container>
     </div>
   );

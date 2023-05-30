@@ -11,5 +11,10 @@ li {
 
 .App {
     padding-bottom: 20px;
+    background: no-repeat  url("assets/bg-optim.jpg");
+    background-size: cover;
+    min-height: 100vh;
+}
+.appContainer {
 }
 
