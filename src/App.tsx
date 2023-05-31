@@ -31,7 +31,7 @@ function App() {
 
   return (
     <div className="App">
-      <Container maxWidth={"lg"} >
+      <Container maxWidth={"xl"} >
         <Paper className={"appContainer"}>
           <AppBarComponent />
           <Routes>

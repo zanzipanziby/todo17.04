@@ -27,7 +27,7 @@ const Task = (props: TaskPropsType) => {
 
   return (
     <Box className={s.taskContainer}>
-      <Box>
+      <Box style={{display: "flex", alignItems:"center"}}>
         <Checkbox
           checked={props.status === TaskStatuses.Completed}
           onChange={onChangeHandler}

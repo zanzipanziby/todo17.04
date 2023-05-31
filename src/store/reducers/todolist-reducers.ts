@@ -99,8 +99,9 @@ const getTodolistTC = createAsyncThunk(
         dispatch(tasksActions.getTasksTC(tl.id));
       });
       return { todolists: res.data };
-    } catch (e) {
-      networkServerErrorHandle(e as AxiosError, dispatch);
+    } catch (error) {
+      networkServerErrorHandle(error as AxiosError, dispatch);
+      return thunkAPI.rejectWithValue(error as AxiosError);
     }
   }
 );
@@ -118,9 +119,12 @@ const addTodolistTC = createAsyncThunk(
         return { todolist: res.data.data.item };
       } else {
         appServerErrorHandle(res.data, dispatch);
+        return thunkAPI.rejectWithValue(res.data.messages[0]);
       }
-    } catch (error) {
-      networkServerErrorHandle(error as AxiosError, dispatch);
+    } catch (e) {
+      const error = e as AxiosError;
+      networkServerErrorHandle(error, dispatch);
+      return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
@@ -138,9 +142,11 @@ const updateTodolistTitleTC = createAsyncThunk(
         return { todolistId, title };
       } else {
         appServerErrorHandle(res.data, dispatch);
+        return thunkAPI.rejectWithValue(res);
       }
     } catch (error) {
       networkServerErrorHandle(error as AxiosError, dispatch);
+      return thunkAPI.rejectWithValue(error as AxiosError);
     }
   }
 );
@@ -150,13 +156,21 @@ const deleteTodolistTC = createAsyncThunk(
   async (arg: { todolistId: string }, thunkAPI) => {
     const { todolistId } = arg;
     const { dispatch } = thunkAPI;
-    dispatch(changeTodolistEntityStatusAC({ todolistId, status: "loading" }));
+    dispatch(
+      todolistsActions.changeTodolistEntityStatusAC({
+        todolistId,
+        status: "loading",
+      })
+    );
     dispatch(appActions.setAppStatusAC({ status: "loading" }));
     try {
       const res = await todolistAPI.deleteTodolist(todolistId);
       dispatch(appActions.setAppStatusAC({ status: "succeeded" }));
       dispatch(
-        changeTodolistEntityStatusAC({ todolistId, status: "succeeded" })
+        todolistsActions.changeTodolistEntityStatusAC({
+          todolistId,
+          status: "succeeded",
+        })
       );
       if (res.data.resultCode === 0) {
         return { todolistId };
@@ -169,8 +183,6 @@ const deleteTodolistTC = createAsyncThunk(
   }
 );
 
-const { changeTodolistFilterValueAC, changeTodolistEntityStatusAC } =
-  slice.actions;
 const todolistsThunk = {
   getTodolistTC,
   addTodolistTC,

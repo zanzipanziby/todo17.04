@@ -152,24 +152,28 @@ const addTaskTC = createAsyncThunk(
         status: "loading",
       })
     );
-    const res = await tasksAPI.addTask(todolistId, title);
     try {
-      dispatch(
-        todolistsActions.changeTodolistEntityStatusAC({
-          todolistId,
-          status: "succeeded",
-        })
-      );
+      const res = await tasksAPI.addTask(todolistId, title);
       dispatch(appActions.setAppStatusAC({ status: "succeeded" }));
       if (res.data.resultCode === 0) {
         return { todolistId, task: res.data.data.item };
       } else {
         appServerErrorHandle(res.data, dispatch);
+        return thunkAPI.rejectWithValue(res.data.messages[0]);
       }
     } catch (e) {
       const error = e as AxiosError;
       networkServerErrorHandle(error, dispatch);
+      return thunkAPI.rejectWithValue(error.message);
     }
+	finally {
+		dispatch(
+			todolistsActions.changeTodolistEntityStatusAC({
+				todolistId,
+				status: "succeeded",
+			})
+		);
+	}
   }
 );
 const updateTaskTC = createAsyncThunk(

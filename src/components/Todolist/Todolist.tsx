@@ -66,8 +66,13 @@ export const Todolist = (props: TodolistPropsType) => {
     deleteTaskTC({ todolistId: props.todolistId, taskId: taskId });
   };
 
-  const addTask = (title: string) => {
-    addTaskTC({ todolistId: props.todolistId, title });
+  const addTask = async (title: string) => {
+    const res = await addTaskTC({ todolistId: props.todolistId, title });
+    console.log(res.payload);
+    if (res.type.endsWith("/rejected")) {
+      return res.payload as string;
+    }
+    return null;
   };
 
   const updateTaskStatus = (taskId: string, status: TaskStatuses) => {
@@ -93,7 +98,7 @@ export const Todolist = (props: TodolistPropsType) => {
 
   const tasksRender = filteredTasks(tasks, props.filter).map((task) => {
     return (
-      <li>
+      <li key={task.id}>
         <Task
           title={task.title}
           status={task.status}
