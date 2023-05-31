@@ -38,6 +38,7 @@ const EditableSpan = (props: EditableSpanPropsType) => {
         variant={"standard"}
         size={"medium"}
         autoFocus
+		style={{width: "180px"}}
       />
     );
   }

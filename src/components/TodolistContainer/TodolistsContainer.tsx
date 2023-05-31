@@ -22,13 +22,18 @@ export const TodolistsContainer = () => {
     return <Navigate to={"/login"} />;
   }
 
-  const addTodolist = (title: string) => {
-    addTodolistTC({ title });
+  const addTodolist = async (title: string) => {
+    const res = await addTodolistTC({ title });
+    console.log(res);
+    if (res.type.endsWith("/rejected")) {
+      return res.payload as string;
+    }
+    return null;
   };
 
   const todolistsRender = todolists.map((todolist: TodolistDomainType) => {
     return (
-      <Grid item>
+      <Grid item key={todolist.id}>
         <Todolist
           key={todolist.id}
           todolistId={todolist.id}
