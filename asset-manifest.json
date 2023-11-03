@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/todo17.04/static/css/main.96fe0a9c.css",
+    "main.js": "/todo17.04/static/js/main.443de87d.js",
+    "static/js/787.db1506d6.chunk.js": "/todo17.04/static/js/787.db1506d6.chunk.js",
+    "static/media/bg4-optimal.png": "/todo17.04/static/media/bg4-optimal.e9a1f37c9cfa1a3efb71.png",
+    "index.html": "/todo17.04/index.html",
+    "main.96fe0a9c.css.map": "/todo17.04/static/css/main.96fe0a9c.css.map",
+    "main.443de87d.js.map": "/todo17.04/static/js/main.443de87d.js.map",
+    "787.db1506d6.chunk.js.map": "/todo17.04/static/js/787.db1506d6.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.96fe0a9c.css",
+    "static/js/main.443de87d.js"
+  ]
+}
